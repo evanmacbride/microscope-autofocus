@@ -89,11 +89,12 @@ def get_clean_infocus_coords(all_coords, labels, img_paths, height, width,
       clean_infocus_coords.append(pos)
   return clean_infocus_coords
 
-def get_clean_data(clean_infocus_coords, all_coords, img_paths):
+def get_clean_data(clean_infocus_coords, all_coords, labels, img_paths):
   '''Return the paths to images in "clean" image stacks.
   
   * clean_infocus_coords: coordinate strings for the in-focus images in a stack
   * all_coords: image coordinate strings for all images being processed
+  * labels: the image labels (i.e. distances to the focal plane)
   * img_paths: file path strings to all images being processed
   '''
 
