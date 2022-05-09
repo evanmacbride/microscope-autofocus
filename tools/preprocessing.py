@@ -10,7 +10,7 @@ def parse_images_cv2(img_path, height, width):
   img_rsz = cv2.resize(img, (width, height), interpolation=cv2.INTER_AREA)
   return img_rsz
 
-def get_metadata_from_filenames(FILE_PATH, ext="jpeg", quiet=True):
+def get_filename_data(FILE_PATH, ext="jpeg", quiet=True):
   '''Find the x and y coordinates and labels (i.e. distance to the focal plane) 
   of the images in FILE_PATH by parsing image filenames. Assumes files are named
   with the format:
@@ -26,9 +26,9 @@ def get_metadata_from_filenames(FILE_PATH, ext="jpeg", quiet=True):
   # Store image positions. Each image stack will be at a set of X and Y 
   # coordinates to be parsed from the filename.
   all_coords = []
-  jpeg_img_paths = list(paths.list_files(FILE_PATH, validExts=ext))
+  img_path_list = list(paths.list_files(FILE_PATH, validExts=ext))
   
-  for img_path in jpeg_img_paths:
+  for img_path in img_path_list:
     # Extract the image label from the filename
     img_bname = os.path.basename(img_path)
     img_fname, _ = os.path.splitext(img_bname)
@@ -57,7 +57,7 @@ def get_metadata_from_filenames(FILE_PATH, ext="jpeg", quiet=True):
     all_coords.append(coor)
   labels = np.array(labels)
   all_coords = np.array(all_coords)
-  return labels, all_coords
+  return labels, all_coords, img_path_list
 
 def get_clean_infocus_coords(all_coords, labels, img_paths, height, width, 
                               intensity_thresh=0.50, eap_thresh=0.10): 
