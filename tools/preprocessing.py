@@ -119,7 +119,7 @@ def get_capped_data(labels, img_paths, cap=20):
   
   # Do not include the focal distance larger than cap
   capped_labels = labels[np.where(np.abs(labels)<=cap)[0]]
-  capped_paths = paths[np.where(np.abs(labels)<=cap)[0]]
+  capped_paths = img_paths[np.where(np.abs(labels)<=cap)[0]]
   return capped_labels, capped_paths
 
 def main():
