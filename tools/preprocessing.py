@@ -121,3 +121,31 @@ def get_capped_data(labels, img_paths, cap=20):
   capped_labels = labels[np.where(np.abs(labels)<=cap)[0]]
   capped_paths = paths[np.where(np.abs(labels)<=cap)[0]]
   return capped_labels, capped_paths
+
+def main():
+  '''Driver function for preprocessing. Given a path to a directory of high pass
+  filtered images, will return the labels (i.e. distances to the focal plane)
+  and file paths of clean image data with distances capped at distance_cap.'''
+
+  # Set default variable values
+  FILE_PATH = "../sample_data/level1_jpeg/"
+  extension = "jpeg"
+  img_height = 1200
+  img_width = 1920
+  intensity_thresh = 0.50
+  eap_thresh = 0.10
+  distance_cap = 20
+
+  labels, all_coords, img_paths = get_filename_data(FILE_PATH, ext="jpeg", quiet=False)
+  clean_infocus_coords = get_clean_infocus_coords(all_coords, labels, img_paths, 
+                                                  img_height, img_width, 
+                                                  intensity_thresh=intensity_thresh, 
+                                                  eap_thresh=eap_thresh)
+  clean_labels, clean_paths = get_clean_data(clean_infocus_coords, all_coords, 
+                                             labels, img_paths)
+  capped_labels, capped_paths = get_capped_data(clean_labels, clean_paths, 
+                                                cap=distance_cap)
+  return
+
+if __name__ == "__main__":
+  main()
