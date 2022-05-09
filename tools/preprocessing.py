@@ -1,15 +1,13 @@
+import cv2
 from imutils import paths
 import numpy as np
 import os
 import re
-import tensorflow as tf
 
-def parse_images(img_path, height, width):
+def parse_images_cv2(img_path, height, width):
   '''Given an image path, height, and width, return a resized float32 of the image.'''
-  img_file = tf.io.read_file(img_path)
-  img_jpeg = tf.io.decode_jpeg(img_file, channels=3)
-  img_flt = tf.image.convert_image_dtype(img_jpeg, tf.float32)
-  img_rsz = tf.image.resize(img_flt, size=[height, width])
+  img = cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2RGB).astype(np.float32)/255.0
+  img_rsz = cv2.resize(img, (width, height), interpolation=cv2.INTER_AREA)
   return img_rsz
 
 def get_metadata_from_filenames(FILE_PATH, ext="jpeg", quiet=True):
@@ -81,7 +79,7 @@ def get_clean_infocus_coords(all_coords, labels, img_paths, height, width,
   # Store X and Y coordinates of "clean" image stacks
   clean_infocus_coords = []
   for img_path, pos in zip(infocus_paths, infocus_coords):
-    img_pixel_vals = parse_images(img_path)[:,:,0]
+    img_pixel_vals = parse_images_cv2(img_path)[:,:,0]
     pixels_above_threshold = len(np.where(img_pixel_vals >= 
                                           intensity_thresh)[0])
     edge_percentage = pixels_above_threshold / height / width
