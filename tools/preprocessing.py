@@ -79,7 +79,7 @@ def get_clean_infocus_coords(all_coords, labels, img_paths, height, width,
   # Store X and Y coordinates of "clean" image stacks
   clean_infocus_coords = []
   for img_path, pos in zip(infocus_paths, infocus_coords):
-    img_pixel_vals = parse_images_cv2(img_path)[:,:,0]
+    img_pixel_vals = parse_images_cv2(img_path, height, width)[:,:,0]
     pixels_above_threshold = len(np.where(img_pixel_vals >= 
                                           intensity_thresh)[0])
     edge_percentage = pixels_above_threshold / height / width
