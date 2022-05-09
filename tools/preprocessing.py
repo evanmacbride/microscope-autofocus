@@ -76,11 +76,11 @@ def get_clean_infocus_coords(all_coords, labels, img_paths, height, width,
   infocus_img_pos = np.where(labels==0)[0]
   # X/Y coordinate strings of physical locations of in-focus images
   infocus_coords = all_coords[infocus_img_pos]
-  # Filenames for in-focus images
-  img_select = np.array(img_paths)[infocus_img_pos]
+  # Convert filename list of in-focus images to numpy array for list indexing.
+  infocus_paths = np.array(img_paths)[infocus_img_pos]
   # Store X and Y coordinates of "clean" image stacks
   clean_infocus_coords = []
-  for img_path, pos in zip(img_select, infocus_coords):
+  for img_path, pos in zip(infocus_paths, infocus_coords):
     img_pixel_vals = parse_images(img_path)[:,:,0]
     pixels_above_threshold = len(np.where(img_pixel_vals >= 
                                           intensity_thresh)[0])
@@ -102,8 +102,9 @@ def get_clean_data(clean_infocus_coords, all_coords, img_paths):
     clean_position = np.where(all_coords==cs)[0]
     for pos in clean_position:
       clean_stack_pos_list.append(pos)
-  jpeg_imgs_select = np.array(img_paths)
-  clean_paths = jpeg_imgs_select[clean_stack_pos_list]
+  # Convert path list to numpy array to enable list indexing.
+  img_paths = np.array(img_paths)
+  clean_paths = img_paths[clean_stack_pos_list]
   clean_labels = labels[clean_stack_pos_list]
   return clean_labels, clean_paths
 
