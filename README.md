@@ -10,3 +10,5 @@ For a walkthrough of our machine learning workflow, open [Walkthrough.ipynb](htt
 If you wish to use the preprocessing methods from this project in your own code, you can import the preprocessing.py module from the [tools folder](https://github.com/evanmacbride/microscope-autofocus/tree/main/tools). Docstrings are provided for each function for your convenience.
 
 You will need some microscopy images to train and test the models. Sample microscopy images provided by Dr. Houk Jang are available in the [sample_data  folder](https://github.com/evanmacbride/microscope-autofocus/tree/main/sample_data). To easily use the sample_data images in the Walkthrough notebook from within Google Colab, you can copy the images to a directory in your Google Drive. The results shown in the Walkthrough notebook were generated with images from the “level 1” folder in sample_data.
+
+For more information on this project, including numerous performance plots, schematics, and illustrations, you can view a PDF of the project's final presentation in the [docs folder](https://github.com/evanmacbride/microscope-autofocus/tree/main/docs).
