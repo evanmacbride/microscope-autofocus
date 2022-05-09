@@ -89,7 +89,7 @@ def get_clean_infocus_coords(all_coords, labels, img_paths, height, width,
       clean_infocus_coords.append(pos)
   return clean_infocus_coords
 
-def get_clean_paths(clean_infocus_coords, all_coords, img_paths):
+def get_clean_data(clean_infocus_coords, all_coords, img_paths):
   '''Return the paths to images in "clean" image stacks.
   
   * clean_infocus_coords: coordinate strings for the in-focus images in a stack
@@ -104,21 +104,20 @@ def get_clean_paths(clean_infocus_coords, all_coords, img_paths):
       clean_stack_pos_list.append(pos)
   jpeg_imgs_select = np.array(img_paths)
   clean_paths = jpeg_imgs_select[clean_stack_pos_list]
-  return clean_paths
+  clean_labels = labels[clean_stack_pos_list]
+  return clean_labels, clean_paths
 
-def get_capped_data(labels, clean_stack_pos_list, clean_paths, cap=20):
+def get_capped_data(labels, img_paths, cap=20):
   '''Put a cap on the maximum allowable distance to the focal plane. Reject images 
    that are at a distance above this cap.
-   
+  
    * labels: the image labels (i.e. distances to the focal plane)
-   * clean_stack_pos_list: a list of positions (i.e. indices) in the labels list
-      that correspond to clean images
-   * clean_paths: file path strings for clean images
+   * img_paths: file path strings for images
    * cap: the limit on an image's allowable maximum absolute distance to the 
       focal plane (in micrometers)
    '''
-  clean_labels = labels[clean_stack_pos_list]
+  
   # Do not include the focal distance larger than cap
-  capped_clean_labels = clean_labels[np.where(np.abs(clean_labels)<=cap)[0]]
-  capped_clean_paths = clean_paths[np.where(np.abs(clean_labels)<=cap)[0]]
-  return capped_clean_labels, capped_clean_paths
+  capped_labels = labels[np.where(np.abs(labels)<=cap)[0]]
+  capped_paths = paths[np.where(np.abs(labels)<=cap)[0]]
+  return capped_labels, capped_paths
