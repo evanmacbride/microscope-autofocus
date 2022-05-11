@@ -7,7 +7,6 @@ def main():
   clean image data with distances capped at distance_cap.'''
 
   # Set variable values to get some output with sample_data images
-  #FILE_PATH = "../sample_data/level1_jpeg/"
   SRC_PATH = "../sample_data/level1/"
   HPF_PATH = "../sample_data/demo_hpf_jpegs/"
   src_ext = "tiff"
