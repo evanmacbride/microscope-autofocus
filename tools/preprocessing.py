@@ -3,12 +3,52 @@ from imutils import paths
 import numpy as np
 import os
 import re
+from scipy import ndimage
 
 def parse_images_cv2(img_path, height, width):
   '''Given an image path, height, and width, return a resized float32 of the image.'''
   img = cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2RGB).astype(np.float32)/255.0
   img_rsz = cv2.resize(img, (width, height), interpolation=cv2.INTER_AREA)
   return img_rsz
+
+def get_img_paths(FILE_PATH, ext):
+  '''Return all files within a directory at FILE_PATH if the files end in ext.'''
+  img_paths = list(paths.list_files(FILE_PATH, validExts=ext))
+  return img_paths
+
+def high_pass_filter(img, kernel_size):
+    '''Apply a high pass filter with given kernel_size to an input image.'''
+    hp_img = cv2.cvtColor(img - ndimage.gaussian_filter(img, kernel_size), 
+                          cv2.COLOR_BGR2GRAY)
+    return hp_img
+
+def filter_imgs(src_img_paths, kernel_size, output_dir_name, output_ext):
+    '''Apply a high pass filter with kernel_size to all images in 
+    src_img_paths. Save the filtered images with extension output_ext to
+    a new directory called output_dir_name. Output filenames will differ 
+    from input filenames only in their extensions.
+    
+    * src_img_paths: path strings for individual source image files
+    * kernel_size: the size of the kernel used in the high pass filter. Larger
+        kernel sizes create thicker edges.
+    * output_dir_name: the name of the directory filtered images will be written to
+    * output_ext: the extension output images will be given
+    '''
+    # If a directory of output_dir_name doesn't exist, create it
+    if not os.path.exists(output_dir_name):
+        os.mkdir(output_dir_name)
+    # Loop through the images in the paths
+    for img_path in src_img_paths:
+        img = cv2.imread(img_path)
+        # Apply the high pass filter to current image
+        hp_img = high_pass_filter(img, kernel_size)
+        # Save filtered image to output_dir_name
+        src_bname = os.path.basename(img_path)
+        src_fname, _ = os.path.splitext(src_bname)
+        fname_str = '{}{}.' + output_ext
+        dest_fname = fname_str.format(output_dir_name,src_fname)
+        cv2.imwrite(dest_fname, hp_img)
+    return
 
 def get_filename_data(FILE_PATH, ext="jpeg", quiet=True):
   '''Find the x and y coordinates and labels (i.e. distance to the focal plane) 
@@ -26,7 +66,7 @@ def get_filename_data(FILE_PATH, ext="jpeg", quiet=True):
   # Store image positions. Each image stack will be at a set of X and Y 
   # coordinates to be parsed from the filename.
   all_coords = []
-  img_path_list = list(paths.list_files(FILE_PATH, validExts=ext))
+  img_path_list = get_img_paths(FILE_PATH, ext)
   
   for img_path in img_path_list:
     # Extract the image label from the filename
