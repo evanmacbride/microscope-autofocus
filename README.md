@@ -4,6 +4,23 @@ This code repository accompanies the paper "Autofocusing optical microscope usin
 ## Project Overview
 Microscopy imaging is an important part of soft materials engineering. It can provide insight into the relationships between materials’ structures and their properties. Microscopy images must be in focus to provide high quality information. A microscope should focus quickly and with fine-grained control, but traditional, iterative autofocus methods are time consuming. This project investigated machine learning methods in an attempt to improve autofocus performance to support soft materials engineering. Given a set of images labeled with their distances to the focal plane, we trained machine learning models to predict the distance to the focal plane of new, out-of-focus test images. Rather than developing new machine learning algorithms, the emphasis of our work was on preprocessing and data cleaning through selection of microscopy images.
 
+<div align="center">
+
+| <img src="/docs/illustrations/level1_example.png" alt="An out-of-focus microscope image"> |
+|:--:|
+| <small>An out-of-focus microscope image from the level 1 dataset</small> |
+
+</div>
+
+
+<div align="center">
+
+| <img src="/docs/illustrations/workflow_schematic.png" alt="A schematic of a machine learning workflow"> |
+|:--:|
+| <small>The machine learning workflow for the project </small> |
+
+</div>
+  
 ## How to use this repository
 For a walkthrough of our machine learning workflow, open [Walkthrough.ipynb](https://github.com/evanmacbride/microscope-autofocus/blob/main/notebooks/Walkthrough.ipynb) (found in the [notebooks folder](https://github.com/evanmacbride/microscope-autofocus/tree/main/notebooks)) and click “Open in Colab.” Follow the directions given in the notebook. Additionally, all notebooks used to create the project, refine preprocessing methods, take performance measurements, etc. are available in the [notebook archive](https://github.com/evanmacbride/microscope-autofocus/tree/main/notebooks/archive). Each of these notebooks can also easily be launched in Google Colab by clicking the "Open in Colab" badge. Change to the new Google Colab and select Runtime > Run all to run the notebook.
 
